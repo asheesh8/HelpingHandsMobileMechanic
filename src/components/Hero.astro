@@ -1,0 +1,135 @@
+---
+import Icon from './Icon.astro';
+import { company, cta, reviews, serviceArea } from '@/data/business';
+---
+
+<section class="hero" data-brake-track>
+  <div class="hero__sticky">
+    <canvas class="hero__canvas" data-brake aria-hidden="true"></canvas>
+    <div class="hero__glow" aria-hidden="true"></div>
+
+    <div class="wrap hero__grid">
+      <div class="hero__copy">
+        <p class="eyebrow" data-reveal>Mobile mechanic · {company.city}, {company.state}</p>
+        <h1 class="h-display hero__h" data-reveal style="--d:80ms">
+          Your driveway<br />
+          is the <span class="hero__red">shop.</span>
+        </h1>
+        <p class="lede hero__lede" data-reveal style="--d:160ms">
+          {company.owner} comes to your home or work and fixes it right there. Brakes, oil changes,
+          diagnostics and more across {serviceArea.slice(0, 3).map((t) => t.town).join(', ')} and the Upper Valley.
+          <strong>{company.laborRateLabel}.</strong>
+        </p>
+        <div class="hero__cta" data-reveal style="--d:240ms">
+          <a class="btn" href={`tel:${company.phoneRaw}`}><Icon name="phone" weight="fill" /> {cta.call}</a>
+          <a class="btn btn--ghost" href={`sms:${company.phoneRaw}`}><Icon name="chat-circle-text" /> Text Chris</a>
+        </div>
+        <p class="hero__proof" data-reveal style="--d:320ms">
+          <span class="hero__stars" aria-hidden="true">
+            {Array.from({ length: 5 }).map(() => <Icon name="star" weight="fill" size={16} />)}
+          </span>
+          <span><strong>{reviews.count} reviews</strong>, {reviews.recommendPct}% recommend on {reviews.source}</span>
+        </p>
+      </div>
+    </div>
+
+    <p class="hero__spec mono" aria-hidden="true">
+      <span>FIG. 01</span><span>Rotor, caliper, pads</span><span>Scroll to take it apart</span>
+    </p>
+  </div>
+</section>
+
+<script>
+  const canvas = document.querySelector<HTMLCanvasElement>('[data-brake]');
+  const track = document.querySelector<HTMLElement>('[data-brake-track]');
+  if (canvas) {
+    import('@/scripts/brake-scene').then(({ mountBrake }) => mountBrake(canvas, track)).catch(() => {
+      canvas.remove();
+    });
+  }
+</script>
+
+
+<style>
+  .hero {
+    position: relative;
+    height: 200svh;
+    margin-top: calc(var(--header-h) * -1);
+  }
+  .hero__sticky {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    min-height: 620px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+  }
+  .hero__canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    left: 22%;
+    opacity: 0;
+    transition: opacity 1.2s var(--ease-out);
+  }
+  .hero__canvas[data-ready] { opacity: 1; }
+  .hero__glow {
+    position: absolute;
+    inset: auto -10% -30% 30%;
+    height: 70%;
+    background: radial-gradient(closest-side, rgb(214 35 42 / 0.22), transparent);
+    pointer-events: none;
+  }
+  .hero__grid { position: relative; z-index: 2; padding-top: var(--header-h); }
+  .hero__copy { max-width: 640px; }
+  .hero__h { margin-top: var(--s-6); }
+  .hero__red { color: var(--red-600); }
+  .hero__lede { margin-top: var(--s-6); }
+  .hero__lede strong { color: var(--text); font-weight: 600; }
+  .hero__cta { display: flex; flex-wrap: wrap; gap: var(--s-4); margin-top: var(--s-7); }
+  .hero__proof {
+    display: flex;
+    align-items: center;
+    gap: var(--s-4);
+    margin-top: var(--s-6);
+    font-size: var(--t-sm);
+    line-height: var(--lh-sm);
+    color: var(--text-muted);
+  }
+  .hero__proof strong { color: var(--text); }
+  .hero__stars { display: inline-flex; gap: 2px; color: var(--red-500); }
+  .hero__spec {
+    position: absolute;
+    left: var(--gutter);
+    right: var(--gutter);
+    bottom: var(--s-7);
+    display: flex;
+    gap: var(--s-6);
+    justify-content: flex-end;
+    font-size: var(--t-xs);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    z-index: 2;
+  }
+  .hero__spec span:first-child { color: var(--red-300); }
+
+  @media (max-width: 860px) {
+    .hero { height: auto; }
+    .hero__sticky {
+      position: relative;
+      height: auto;
+      min-height: 0;
+      flex-direction: column;
+      align-items: stretch;
+      padding: var(--header-h) 0 var(--s-10);
+    }
+    .hero__canvas { position: relative; inset: auto; left: 0; width: 100%; height: 44svh; min-height: 280px; }
+    .hero__glow { inset: 0 -20% auto -20%; height: 50svh; }
+    .hero__grid { padding-top: 0; }
+    .hero__h { margin-top: var(--s-4); }
+    .hero__spec { display: none; }
+  }
+</style>

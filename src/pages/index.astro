@@ -1,0 +1,346 @@
+---
+import { Image } from 'astro:assets';
+import Base from '@/layouts/Base.astro';
+import Hero from '@/components/Hero.astro';
+import Icon from '@/components/Icon.astro';
+import { company, services, process, reviews, serviceArea, whyUs, community, faqs } from '@/data/business';
+import allReviews from '@/data/reviews.json';
+
+import imgHub from '@/assets/photos/brake-hub.jpg';
+import imgRotor from '@/assets/photos/brake-new-rotor.jpg';
+import imgTeardown from '@/assets/photos/brake-teardown.jpg';
+import imgWheel from '@/assets/photos/highlander-wheel.jpg';
+import imgJob from '@/assets/photos/on-the-job.jpg';
+import imgCrew from '@/assets/photos/crew.jpg';
+
+const icons: Record<string, string> = {
+  brakes: 'disc',
+  oil: 'drop',
+  diagnostics: 'engine',
+  'tune-up': 'gauge',
+  battery: 'battery-charging',
+  tires: 'tire',
+};
+
+// Short, exact excerpts from real Facebook recommendations.
+const featured = [
+  { name: 'Carolyn Birdsey', quote: 'He was very informative and took pictures throughout the whole process so I could actually see what was going on with my car.' },
+  { name: 'Landon Wood', quote: 'Instead of disappearing after the job was done like some mechanics might, he answered my call immediately, came right out, diagnosed the real issue.' },
+  { name: 'Terry O’Leary-Thornton', quote: 'He went many hours over his estimate and still kept his price at what we had originally discussed.' },
+  { name: 'Olivia Judd', quote: 'I needed someone to look at my car and he came right to my house. Chris is very nice and very affordable.' },
+  { name: 'Shelley Johnson', quote: 'Chris even responded by text around 3am in the morning and called me before 7am.' },
+  { name: 'Phil Trembley', quote: 'If he can’t do it, he will gladly recommend a local shop or mechanic who can.' },
+];
+// Guard: every featured quote must appear word for word in the scrape.
+for (const f of featured) {
+  const src = allReviews.reviews.find((r) => r.name.replace('’', "'") === f.name.replace('’', "'"));
+  const norm = (t: string) => t.replace(/’/g, "'").replace(/\s+/g, ' ');
+  if (!src || !norm(src.text).includes(norm(f.quote).replace(/[.!]$/, ''))) {
+    throw new Error(`Review quote for ${f.name} does not match the Facebook text.`);
+  }
+}
+
+const tagline = 'We don’t just work on cars. We help the community.';
+---
+
+<Base
+  title={`${company.name} | Mobile Mechanic in Enfield, NH and the Upper Valley`}
+  description={company.shortDescription}
+>
+  <Hero />
+
+  <!-- Proof bar -->
+  <section class="proof" aria-label="At a glance">
+    <div class="wrap proof__row">
+      <div class="proof__item"><span class="proof__n mono">{reviews.count}</span><span>Facebook reviews</span></div>
+      <div class="proof__item"><span class="proof__n mono">{reviews.recommendPct}%</span><span>would recommend</span></div>
+      <div class="proof__item"><span class="proof__n mono">${company.laborRate}</span><span>an hour labor</span></div>
+      <div class="proof__item"><span class="proof__n mono">{serviceArea.length}</span><span>towns in NH and VT</span></div>
+    </div>
+  </section>
+
+  <!-- Brakes -->
+  <section class="section brakes" id="brakes">
+    <div class="wrap brakes__grid">
+      <div>
+        <p class="eyebrow" data-reveal>Fig. 02 · Most of what we do</p>
+        <h2 class="h-section" data-reveal style="--d:60ms">Brakes, done<br />where you park.</h2>
+        <p class="lede" data-reveal style="--d:120ms">
+          Pads, rotors, calipers and the hardware that holds them. Chris pulls the wheel in your driveway, shows you
+          the worn parts and puts new ones on. Customers say he sends photos the whole way through.
+        </p>
+        <ul class="checks" data-reveal style="--d:180ms">
+          {whyUs.slice(0, 4).map((w) => <li><Icon name="check" size={18} /> {w}</li>)}
+        </ul>
+      </div>
+      <div class="brakes__photos">
+        <figure class="plate ph ph--a" data-reveal><Image src={imgHub} alt="Brake job in progress: rotor off, rusty hub and caliper bracket exposed" widths={[360, 720]} sizes="(max-width: 860px) 45vw, 22vw" /></figure>
+        <figure class="plate ph ph--b" data-reveal style="--d:100ms"><Image src={imgRotor} alt="New rotor and caliper bolted on after a brake job" widths={[360, 720]} sizes="(max-width: 860px) 45vw, 22vw" /></figure>
+        <figure class="plate ph ph--c" data-reveal style="--d:200ms"><Image src={imgTeardown} alt="Front brake taken apart on a jack stand in a customer's driveway" widths={[480, 960]} sizes="(max-width: 860px) 92vw, 44vw" /></figure>
+      </div>
+    </div>
+  </section>
+
+  <div class="slash" aria-hidden="true"></div>
+
+  <!-- Services -->
+  <section class="section paper" id="services">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow" data-reveal>What Chris fixes</p>
+        <h2 class="h-section" data-reveal style="--d:60ms">No lift? No problem.</h2>
+      </div>
+      <ul class="svc">
+        {services.map((s, i) => (
+          <li class="svc__card" data-reveal style={`--d:${i * 60}ms`}>
+            <div class="svc__top">
+              <span class="svc__icon"><Icon name={icons[s.slug]} size={26} /></span>
+              <span class="mono svc__num">{String(i + 1).padStart(2, '0')}</span>
+            </div>
+            <h3 class="h-card">{s.name}{s.comingSoon && <span class="svc__soon mono">Coming soon</span>}</h3>
+            <p>{s.short}</p>
+            <ul class="svc__items">{s.items.map((it) => <li>{it}</li>)}</ul>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- Process -->
+  <section class="section process">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow" data-reveal>How a visit goes</p>
+        <h2 class="h-section" data-reveal style="--d:60ms">Inspect. Diagnose.<br />Service. Test. Deliver.</h2>
+      </div>
+      <ol class="steps">
+        {process.map((p, i) => (
+          <li data-reveal style={`--d:${i * 80}ms`}>
+            <span class="mono steps__n">{String(i + 1).padStart(2, '0')}</span>
+            <h3>{p.step}</h3>
+            <p>{p.text}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- Reviews -->
+  <section class="section reviews" id="reviews">
+    <div class="wrap">
+      <div class="sec-head reviews__head">
+        <div>
+          <p class="eyebrow" data-reveal>{reviews.count} reviews · {reviews.recommendPct}% recommend</p>
+          <h2 class="h-section" data-reveal style="--d:60ms">Straight from<br />the driveway.</h2>
+        </div>
+        <a class="link-arrow" href={`${company.facebook}`} target="_blank" rel="noopener">Read all {reviews.count} on Facebook <Icon name="arrow-up-right" /></a>
+      </div>
+      <ul class="quotes">
+        {featured.map((f, i) => (
+          <li class="quote" data-reveal style={`--d:${(i % 3) * 80}ms`}>
+            <Icon name="quotes" size={28} class="quote__mark" />
+            <blockquote>{f.quote}</blockquote>
+            <p class="quote__by mono">{f.name}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- Tagline reveal -->
+  <section class="section tagline" aria-label="Our promise">
+    <div class="wrap">
+      <p class="tagline__text" data-words>
+        {tagline.split(' ').map((w) => <span>{w} </span>)}
+      </p>
+    </div>
+  </section>
+
+  <!-- Community -->
+  <section class="section paper community">
+    <div class="wrap community__grid">
+      <figure class="plate community__photo" data-reveal>
+        <Image src={imgCrew} alt="Chris and a helper in Helping Hands shirts beside a customer's car in a parking lot" widths={[600, 1200]} sizes="(max-width: 860px) 92vw, 46vw" />
+      </figure>
+      <div>
+        <p class="eyebrow" data-reveal>More than just cars</p>
+        <h2 class="h-section" data-reveal style="--d:60ms">Neighbors<br />first.</h2>
+        <ul class="comm">
+          {community.map((c, i) => (
+            <li data-reveal style={`--d:${i * 70}ms`}>
+              <Icon name="hand-heart" size={22} />
+              <div><h3>{c.name}</h3><p>{c.text}</p></div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Area -->
+  <section class="section area" id="area">
+    <div class="wrap area__grid">
+      <div>
+        <p class="eyebrow" data-reveal>Service area</p>
+        <h2 class="h-section" data-reveal style="--d:60ms">Both sides<br />of the river.</h2>
+        <p class="lede" data-reveal style="--d:120ms">Based in Enfield. Chris drives to you across the Upper Valley, New Hampshire and Vermont.</p>
+      </div>
+      <ul class="towns">
+        {serviceArea.map((t, i) => (
+          <li data-reveal style={`--d:${i * 50}ms`} class:list={[{ home: t.home }]}>
+            <Icon name="map-pin" size={18} />
+            <span>{t.town}</span>
+            <span class="mono">{t.state}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section paper faq">
+    <div class="wrap faq__grid">
+      <div>
+        <p class="eyebrow" data-reveal>Questions</p>
+        <h2 class="h-section" data-reveal style="--d:60ms">Before<br />you call.</h2>
+      </div>
+      <div class="faq__list">
+        {faqs.map((f) => (
+          <details data-reveal>
+            <summary><span>{f.q}</span><Icon name="plus" size={20} /></summary>
+            <p>{f.a}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section class="section visit" id="visit">
+    <div class="wrap visit__grid">
+      <figure class="plate visit__photo" data-reveal>
+        <Image src={imgJob} alt="Chris kneeling at a customer's car with tools spread on the ground" widths={[480, 960]} sizes="(max-width: 860px) 92vw, 36vw" />
+      </figure>
+      <div>
+        <p class="eyebrow" data-reveal>Book a visit</p>
+        <h2 class="h-display" data-reveal style="--d:60ms">Car trouble?<br /><span class="hero__red">Text Chris.</span></h2>
+        <p class="lede" data-reveal style="--d:120ms">Send the year, make and model and what it is doing. He will tell you what to expect before he heads over.</p>
+        <div class="hero__cta" data-reveal style="--d:180ms">
+          <a class="btn" href={`sms:${company.phoneRaw}`}><Icon name="chat-circle-text" weight="fill" /> Text {company.phone}</a>
+          <a class="btn btn--ghost" href={`tel:${company.phoneRaw}`}><Icon name="phone" /> Call instead</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script>
+  // Tagline: each word lights up as it crosses the middle of the screen.
+  const words = document.querySelectorAll<HTMLElement>('[data-words] span');
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(
+      (es) => es.forEach((e) => e.target.classList.toggle('on', e.isIntersecting || e.boundingClientRect.top < 0)),
+      { rootMargin: '0px 0px -45% 0px' },
+    );
+    words.forEach((w) => io.observe(w));
+  } else words.forEach((w) => w.classList.add('on'));
+</script>
+
+<style>
+  .proof { border-block: 1px solid var(--line); background: var(--ink-900); position: relative; z-index: 3; }
+  .proof__row { display: grid; grid-template-columns: repeat(4, 1fr); }
+  .proof__item { display: grid; gap: 4px; padding: var(--s-7) var(--s-6); border-left: 1px solid var(--line); color: var(--text-muted); font-size: var(--t-sm); line-height: var(--lh-sm); }
+  .proof__item:first-child { border-left: 0; padding-left: 0; }
+  .proof__n { font-size: var(--t-4xl); line-height: var(--lh-4xl); color: var(--text); font-weight: 600; }
+
+  .sec-head { display: grid; gap: var(--s-5); margin-bottom: var(--s-10); max-width: 760px; }
+  .sec-head .h-section { margin-top: 0; }
+
+  .brakes__grid { display: grid; grid-template-columns: 1fr 1.05fr; gap: var(--s-11); align-items: center; }
+  .brakes .h-section { margin-top: var(--s-5); }
+  .brakes .lede { margin-top: var(--s-6); }
+  .checks { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-4) var(--s-6); margin-top: var(--s-7); }
+  .checks li { display: flex; gap: 10px; align-items: center; font-weight: 500; }
+  .checks :global(svg) { color: var(--red-300); flex: none; }
+  .brakes__photos { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-4); }
+  .ph { margin: 0; overflow: hidden; background: var(--ink-800); }
+  .ph :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .ph--a, .ph--b { aspect-ratio: 3 / 4; }
+  .ph--b { transform: translateY(var(--s-9)); }
+  .ph--c { grid-column: 1 / -1; aspect-ratio: 16 / 9; margin-top: var(--s-9); }
+
+  .svc { list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+  .svc__card { background: var(--paper); padding: var(--s-7); display: grid; gap: var(--s-4); align-content: start; transition: background-color 200ms ease; }
+  .svc__card:hover { background: #fff; }
+  .svc__top { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--s-4); }
+  .svc__icon { display: grid; place-items: center; width: 48px; height: 48px; background: var(--ink-950); color: #fff; clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px)); }
+  .svc__num { font-size: var(--t-xs); color: var(--text-faint); letter-spacing: 0.14em; }
+  .svc__card p { color: var(--text-muted); }
+  .svc__soon { display: inline-block; margin-left: var(--s-3); padding: 2px 8px; font-size: var(--t-xs); line-height: var(--lh-xs); letter-spacing: 0.1em; background: var(--red-600); color: #fff; vertical-align: middle; }
+  .svc__items { list-style: none; display: flex; flex-wrap: wrap; gap: 6px; margin-top: var(--s-3); }
+  .svc__items li { font-family: var(--font-mono); font-size: var(--t-xs); line-height: var(--lh-xs); padding: 4px 8px; border: 1px solid var(--line-strong); }
+
+  .steps { list-style: none; display: grid; grid-template-columns: repeat(5, 1fr); counter-reset: s; border-top: 1px solid var(--line-strong); }
+  .steps li { padding: var(--s-6) var(--s-5) 0 0; position: relative; }
+  .steps li::before { content: ''; position: absolute; top: -5px; left: 0; width: 9px; height: 9px; background: var(--red-600); transform: rotate(45deg); }
+  .steps__n { font-size: var(--t-xs); color: var(--red-300); letter-spacing: 0.14em; }
+  .steps h3 { font-size: var(--t-3xl); line-height: var(--lh-3xl); margin-top: var(--s-3); }
+  .steps p { color: var(--text-muted); margin-top: var(--s-3); font-size: var(--t-sm); line-height: var(--lh-sm); }
+
+  .reviews__head { display: flex; justify-content: space-between; align-items: end; max-width: none; gap: var(--s-6); flex-wrap: wrap; }
+  .quotes { list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-5); }
+  .quote { background: var(--ink-900); border: 1px solid var(--line); padding: var(--s-7); display: flex; flex-direction: column; gap: var(--s-5); }
+  .quote :global(.quote__mark) { color: var(--red-600); }
+  .quote blockquote { margin: 0; font-size: var(--t-lg); line-height: var(--lh-lg); flex: 1; }
+  .quote__by { font-size: var(--t-xs); letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-faint); }
+
+  .tagline__text { font-family: var(--font-display); font-weight: 800; text-transform: uppercase; font-size: clamp(var(--t-5xl), 7vw, var(--t-8xl)); line-height: 0.95; max-width: 14ch; }
+  .tagline__text span { color: rgb(243 244 246 / 0.18); transition: color 600ms var(--ease-out); }
+  .tagline__text span:global(.on) { color: var(--text); }
+
+  .community__grid, .visit__grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-11); align-items: center; }
+  .community__photo, .visit__photo { margin: 0; overflow: hidden; }
+  .community__photo :global(img), .visit__photo :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .community__photo { aspect-ratio: 4 / 3; }
+  .visit__photo { aspect-ratio: 3 / 4; max-height: 640px; }
+  .community .h-section, .area .h-section, .faq .h-section, .visit .h-display { margin-top: var(--s-5); }
+  .comm { list-style: none; display: grid; gap: var(--s-6); margin-top: var(--s-8); }
+  .comm li { display: flex; gap: var(--s-5); }
+  .comm :global(svg) { color: var(--red-600); flex: none; margin-top: 4px; }
+  .comm h3 { font-size: var(--t-2xl); line-height: var(--lh-2xl); }
+  .comm p { color: var(--text-muted); margin-top: 4px; }
+
+  .area__grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-11); align-items: end; }
+  .area .lede { margin-top: var(--s-6); }
+  .towns { list-style: none; display: grid; }
+  .towns li { display: grid; grid-template-columns: auto 1fr auto; gap: var(--s-4); align-items: center; padding: var(--s-5) 0; border-bottom: 1px solid var(--line); font-family: var(--font-display); font-weight: 700; font-size: var(--t-3xl); line-height: var(--lh-3xl); text-transform: uppercase; }
+  .towns li :global(svg) { color: var(--text-faint); }
+  .towns li.home :global(svg) { color: var(--red-500); }
+  .towns .mono { font-size: var(--t-sm); color: var(--text-faint); font-weight: 400; }
+
+  .faq__grid { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: var(--s-11); }
+  .faq__list details { border-bottom: 1px solid var(--line-strong); }
+  .faq__list summary { display: flex; justify-content: space-between; align-items: center; gap: var(--s-5); padding: var(--s-6) 0; cursor: pointer; list-style: none; font-weight: 600; font-size: var(--t-lg); line-height: var(--lh-lg); }
+  .faq__list summary::-webkit-details-marker { display: none; }
+  .faq__list summary :global(svg) { transition: transform 240ms var(--ease-out); flex: none; }
+  .faq__list details[open] summary :global(svg) { transform: rotate(45deg); color: var(--red-600); }
+  .faq__list details p { padding-bottom: var(--s-6); color: var(--text-muted); max-width: 60ch; }
+
+  .visit .lede { margin-top: var(--s-6); }
+
+  @media (max-width: 960px) {
+    .svc, .quotes { grid-template-columns: 1fr 1fr; }
+    .steps { grid-template-columns: 1fr 1fr; gap: var(--s-6); border-top: 0; }
+    .steps li { border-top: 1px solid var(--line-strong); }
+  }
+  @media (max-width: 860px) {
+    .brakes__grid, .community__grid, .area__grid, .faq__grid, .visit__grid { grid-template-columns: 1fr; gap: var(--s-9); }
+    .proof__row { grid-template-columns: 1fr 1fr; }
+    .proof__item:nth-child(3) { border-left: 0; padding-left: 0; }
+    .proof__item { border-top: 1px solid var(--line); }
+    .proof__item:nth-child(-n+2) { border-top: 0; }
+  }
+  @media (max-width: 600px) {
+    .svc, .quotes, .checks { grid-template-columns: 1fr; }
+  }
+</style>

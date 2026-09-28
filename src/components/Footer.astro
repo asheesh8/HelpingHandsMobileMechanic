@@ -1,0 +1,95 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import { company, hours, serviceArea, emergencyNote } from '@/data/business';
+const year = new Date().getFullYear();
+---
+<footer class="ftr">
+  <div class="wrap ftr__grid">
+    <div class="ftr__brand">
+      <Logo variant="full" class="ftr__logo" />
+      <p class="ftr__bio">{company.bio}. Run by {company.owner} out of {company.city}, {company.state}.</p>
+    </div>
+
+    <div>
+      <h2 class="ftr__h">Reach Chris</h2>
+      <ul class="ftr__list">
+        <li><a href={`tel:${company.phoneRaw}`}><Icon name="phone" size={16} /> {company.phone}</a></li>
+        <li><a href={`sms:${company.phoneRaw}`}><Icon name="chat-circle-text" size={16} /> Text the same number</a></li>
+        <li><a href={`mailto:${company.email}`}><Icon name="envelope-simple" size={16} /> {company.email}</a></li>
+        <li><a href={company.facebook} rel="noopener" target="_blank"><Icon name="facebook-logo" size={16} /> Facebook</a></li>
+        <li><a href={company.tiktok} rel="noopener" target="_blank"><Icon name="tiktok-logo" size={16} /> {company.tiktokHandle}</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h2 class="ftr__h">Hours</h2>
+      <ul class="ftr__list ftr__hours">
+        {hours.map((h) => <li><span>{h.days}</span><span class="mono">{h.time}</span></li>)}
+        <li class="ftr__em"><Icon name="siren" size={16} /> {emergencyNote}</li>
+      </ul>
+    </div>
+
+    <div>
+      <h2 class="ftr__h">Service area</h2>
+      <ul class="ftr__list">
+        {serviceArea.map((t) => <li>{t.town}, {t.state}</li>)}
+      </ul>
+    </div>
+  </div>
+
+  <div class="wrap ftr__base">
+    <p>&copy; {year} {company.name}. Mailing address: {company.mailing}. No shop visits: Chris comes to you.</p>
+    <p><a href="/privacy/">Privacy</a> · Site by <a href="https://arkitechsolutions.com" rel="noopener" target="_blank">ArkiTech Solutions</a> · <a href="/credits/">3D credits</a></p>
+  </div>
+</footer>
+
+<style>
+  .ftr {
+    border-top: 1px solid var(--line);
+    background: var(--ink-950);
+    padding-top: var(--s-12);
+  }
+  .ftr__grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr 0.8fr;
+    gap: var(--s-9);
+  }
+  .ftr__brand :global(.ftr__logo) { width: 240px; height: auto; }
+  .ftr__bio { margin-top: var(--s-6); max-width: 22rem; color: var(--text-muted); font-size: var(--t-sm); line-height: var(--lh-sm); }
+  .ftr__h {
+    font-family: var(--font-mono);
+    font-size: var(--t-xs);
+    line-height: var(--lh-xs);
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    color: var(--text-faint);
+    margin-bottom: var(--s-5);
+  }
+  .ftr__list { list-style: none; display: grid; gap: var(--s-3); font-size: var(--t-sm); line-height: var(--lh-sm); color: var(--text-muted); }
+  .ftr__list a { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; color: var(--text); }
+  .ftr__list a:hover { color: var(--red-300); }
+  .ftr__hours li { display: flex; justify-content: space-between; gap: var(--s-5); }
+  .ftr__hours .mono { color: var(--text); }
+  .ftr__em { color: var(--red-300); justify-content: flex-start !important; align-items: center; gap: 8px !important; }
+  .ftr__base {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--s-4);
+    margin-top: var(--s-11);
+    padding-block: var(--s-7);
+    border-top: 1px solid var(--line);
+    font-size: var(--t-xs);
+    line-height: var(--lh-xs);
+    color: var(--text-faint);
+  }
+  .ftr__base a { color: var(--text-muted); }
+  @media (max-width: 960px) {
+    .ftr__grid { grid-template-columns: 1fr 1fr; }
+    .ftr__brand { grid-column: 1 / -1; }
+  }
+  @media (max-width: 520px) {
+    .ftr__grid { grid-template-columns: 1fr; }
+  }
+</style>

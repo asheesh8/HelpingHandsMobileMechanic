@@ -1,0 +1,331 @@
+/*
+ * Helping Hands Auto Care design tokens.
+ *
+ * Colour comes from the logo: a black shield, a chrome rim, a red swoosh.
+ * Red is the one accent. It marks the primary action and nothing decorative.
+ * Shapes echo the shield and the diagonal slashes on Chris's brochure:
+ * chamfered corners on buttons and frames, a skewed red band between sections.
+ */
+@import '@fontsource-variable/big-shoulders-display';
+@import '@fontsource-variable/geist';
+@import '@fontsource-variable/geist-mono';
+
+:root {
+  /* Ink (the shield) */
+  --ink-950: #0a0a0b;
+  --ink-900: #111113;
+  --ink-850: #17171a;
+  --ink-800: #1d1d21;
+  --ink-700: #28282d;
+  --ink-600: #3a3a41;
+
+  /* Chrome (the rim) */
+  --steel-500: #6f737b;
+  --steel-400: #8e929a;
+  --steel-300: #b3b7be;
+  --steel-200: #d3d6db;
+  --chrome-50: #f3f4f6;
+
+  /* Red (the swoosh) */
+  --red-700: #b3161c;
+  --red-600: #d6232a;
+  --red-500: #e8383e;
+  --red-300: #ff7a7e; /* red text on ink, 6.9:1 on --ink-950 */
+
+  /* Paper, for the light sections */
+  --paper: #f2f0eb;
+  --paper-2: #e7e4dd;
+  --paper-ink: #121214;
+  --paper-muted: #55555c;
+
+  /* Roles */
+  --bg: var(--ink-950);
+  --surface: var(--ink-900);
+  --surface-2: var(--ink-850);
+  --line: rgb(255 255 255 / 0.09);
+  --line-strong: rgb(255 255 255 / 0.18);
+  --text: var(--chrome-50);
+  --text-muted: var(--steel-300);
+  --text-faint: var(--steel-400);
+  --accent: var(--red-600);
+  --accent-hover: var(--red-500);
+  --accent-text: var(--red-300);
+
+  /* Type */
+  --font-display: 'Big Shoulders Display Variable', 'Arial Narrow', sans-serif;
+  --font-body: 'Geist Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'Geist Mono Variable', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  /* Tailwind type steps: size / line height */
+  --t-xs: 0.75rem;   --lh-xs: 1rem;
+  --t-sm: 0.875rem;  --lh-sm: 1.25rem;
+  --t-base: 1rem;    --lh-base: 1.5rem;
+  --t-lg: 1.125rem;  --lh-lg: 1.75rem;
+  --t-xl: 1.25rem;   --lh-xl: 1.75rem;
+  --t-2xl: 1.5rem;   --lh-2xl: 2rem;
+  --t-3xl: 1.875rem; --lh-3xl: 2.25rem;
+  --t-4xl: 2.25rem;  --lh-4xl: 2.5rem;
+  --t-5xl: 3rem;
+  --t-6xl: 3.75rem;
+  --t-7xl: 4.5rem;
+  --t-8xl: 6rem;
+  --t-9xl: 8rem;
+
+  /* Spacing */
+  --s-1: 2px; --s-2: 4px; --s-3: 8px; --s-4: 12px; --s-5: 16px; --s-6: 24px;
+  --s-7: 32px; --s-8: 40px; --s-9: 48px; --s-10: 64px; --s-11: 80px; --s-12: 96px;
+
+  --gutter: clamp(16px, 4vw, 40px);
+  --max: 1240px;
+  --section-y: clamp(64px, 10vw, 128px);
+
+  /* Shape */
+  --r-sm: 4px;
+  --r-md: 8px;
+  --r-lg: 16px;
+  --chamfer: 12px;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+
+  --header-h: 68px;
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-padding-top: calc(var(--header-h) + 16px);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: var(--t-base);
+  line-height: var(--lh-base);
+  font-feature-settings: 'ss01', 'cv11';
+  overflow-x: clip;
+}
+
+img, svg, video, canvas { display: block; max-width: 100%; }
+img { height: auto; }
+
+h1, h2, h3, h4 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.005em;
+  text-wrap: balance;
+  text-transform: uppercase;
+}
+p { margin: 0; text-wrap: pretty; }
+a { color: inherit; }
+ul, ol { margin: 0; padding: 0; }
+button { font: inherit; color: inherit; }
+
+::selection { background: var(--red-600); color: #fff; }
+
+:focus-visible {
+  outline: 2px solid var(--red-300);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.sr-only {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0);
+  white-space: nowrap; border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  left: 16px; top: -100px;
+  z-index: 100;
+  padding: 12px 16px;
+  background: var(--chrome-50);
+  color: var(--ink-950);
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: var(--r-md);
+}
+.skip-link:focus { top: 12px; }
+
+/* ---------- Layout ---------- */
+.wrap {
+  width: 100%;
+  max-width: calc(var(--max) + var(--gutter) * 2);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.section { padding-block: var(--section-y); position: relative; }
+
+.paper {
+  --bg: var(--paper);
+  --surface: #fff;
+  --surface-2: var(--paper-2);
+  --line: rgb(0 0 0 / 0.1);
+  --line-strong: rgb(0 0 0 / 0.2);
+  --text: var(--paper-ink);
+  --text-muted: var(--paper-muted);
+  --text-faint: #75757c;
+  --accent-text: var(--red-700);
+  background: var(--bg);
+  color: var(--text);
+  color-scheme: light;
+}
+
+/* ---------- Type helpers ---------- */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-3);
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  line-height: var(--lh-xs);
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent-text);
+}
+.eyebrow::before {
+  content: '';
+  width: 18px; height: 2px;
+  background: currentColor;
+  transform: skewX(-30deg);
+}
+
+.h-display {
+  font-size: clamp(var(--t-5xl), 8.4vw, var(--t-9xl));
+  line-height: 0.88;
+  font-weight: 800;
+}
+.h-section {
+  font-size: clamp(var(--t-4xl), 5.6vw, var(--t-7xl));
+  line-height: 0.92;
+}
+.h-card {
+  font-size: var(--t-3xl);
+  line-height: var(--lh-3xl);
+}
+.lede {
+  font-size: var(--t-lg);
+  line-height: var(--lh-lg);
+  color: var(--text-muted);
+  max-width: 34rem;
+}
+.mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+.chrome-text {
+  background: linear-gradient(180deg, #ffffff 10%, #c9ccd2 52%, #7d8189 53%, #e9ebee 92%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  --btn-bg: var(--accent);
+  --btn-fg: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-3);
+  min-height: 48px;
+  padding: 12px 20px;
+  border: 0;
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  font-family: var(--font-body);
+  font-size: var(--t-base);
+  line-height: var(--lh-base);
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  clip-path: polygon(0 0, calc(100% - var(--chamfer)) 0, 100% var(--chamfer), 100% 100%, var(--chamfer) 100%, 0 calc(100% - var(--chamfer)));
+  transition: background-color 180ms ease, transform 160ms var(--ease-out);
+  -webkit-tap-highlight-color: transparent;
+}
+.btn:hover { --btn-bg: var(--accent-hover); }
+.btn:active { transform: scale(0.97); }
+.btn svg { width: 20px; height: 20px; flex: none; }
+
+.btn--ghost {
+  --btn-bg: rgb(255 255 255 / 0.06);
+  --btn-fg: var(--text);
+  box-shadow: inset 0 0 0 1px var(--line-strong);
+}
+.btn--ghost:hover { --btn-bg: rgb(255 255 255 / 0.12); }
+.paper .btn--ghost { --btn-bg: rgb(0 0 0 / 0.04); }
+.paper .btn--ghost:hover { --btn-bg: rgb(0 0 0 / 0.08); }
+
+.btn--sm {
+  min-height: 40px;
+  padding: 8px 14px;
+  font-size: var(--t-sm);
+  line-height: var(--lh-sm);
+  --chamfer: 9px;
+}
+
+.link-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--text);
+}
+.link-arrow svg { width: 18px; height: 18px; transition: transform 200ms var(--ease-out); }
+.link-arrow:hover svg { transform: translateX(3px); }
+
+/* ---------- Frames ---------- */
+.plate {
+  clip-path: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 22px 100%, 0 calc(100% - 22px));
+}
+
+/* The skewed red band from the brochure */
+.slash {
+  position: relative;
+  height: clamp(28px, 5vw, 56px);
+  background: var(--red-600);
+  transform: skewY(-2.2deg);
+  margin-block: calc(clamp(28px, 5vw, 56px) * -0.5);
+  z-index: 2;
+}
+
+/* ---------- Reveal on scroll ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  .js [data-reveal] {
+    opacity: 0;
+    transform: translateY(18px);
+    filter: blur(6px);
+    transition:
+      opacity 800ms var(--ease-out),
+      transform 900ms var(--ease-out),
+      filter 800ms var(--ease-out);
+    transition-delay: var(--d, 0ms);
+  }
+  .js [data-reveal].is-in {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}

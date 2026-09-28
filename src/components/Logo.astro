@@ -1,0 +1,21 @@
+---
+/**
+ * The Helping Hands logo, rebuilt as SVG by scripts/build-logo.py.
+ * variant="full" is the stacked logo; variant="mark" is the shield and swoosh.
+ */
+import full from '@/assets/brand/logo-full.svg?raw';
+import mark from '@/assets/brand/logo-mark.svg?raw';
+
+export interface Props {
+  variant?: 'full' | 'mark';
+  class?: string;
+}
+const { variant = 'full', class: cls = '' } = Astro.props;
+// Gradient ids must be unique per instance or a second logo on the page
+// would borrow the first one's gradients.
+const uid = Math.random().toString(36).slice(2, 7);
+const svg = (variant === 'full' ? full : mark)
+  .replaceAll('hh-', `hh${uid}-`)
+  .replace('<svg ', `<svg class="logo logo--${variant} ${cls}" `);
+---
+<Fragment set:html={svg} />

@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="80 84 490 154" role="img" aria-label="Helping Hands"><title>Helping Hands</title>
+  <defs>
+    <linearGradient id="hh-rim" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f6f7f8"/>
+      <stop offset="0.45" stop-color="#b4b8be"/>
+      <stop offset="0.7" stop-color="#eceef0"/>
+      <stop offset="1" stop-color="#868b93"/>
+    </linearGradient>
+    <linearGradient id="hh-swoosh" x1="85" y1="0" x2="565" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="0.62" stop-color="#f4f4f5"/>
+      <stop offset="0.8" stop-color="#e3aab3"/>
+      <stop offset="1" stop-color="#c43a50"/>
+    </linearGradient>
+    <linearGradient id="hh-roof" x1="0" y1="146" x2="0" y2="194" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#d9dbde"/>
+    </linearGradient>
+  </defs>
+  <path d="M166 186 L166 138 Q167 118 186 110 C240 94 300 87 350 88 C400 89 445 98 470 108 Q482 113 482 128 L483 206" fill="none" stroke="url(#hh-rim)" stroke-width="9" stroke-linejoin="round"/>
+  <path d="M153 92 L156 125 L190 128 L156 131 L153 164 L150 131 L116 128 L150 125 Z M153 128 L170 111 L156 128 L170 145 L153 128 L136 145 L150 128 L136 111 Z" fill="#fff"/>
+  <path d="M222 194 C250 170 290 152 335 147 C362 145 385 154 400 176 C385 171 366 168 342 168 C300 170 262 180 222 194 Z" fill="url(#hh-roof)"/>
+  <path d="M400 176 L407 180 L352 206 L338 206 Z" fill="#f2f2f3"/>
+  <path d="M85 229 C130 214 185 206 240 204 C290 203 320 206 346 205 C390 199 440 189 490 191 C525 193 548 202 564 215 C535 207 505 204 470 206 C425 209 395 219 350 224 C300 228 250 224 205 219 L168 222 L160 233 L148 222 C125 223 105 225 85 229 Z" fill="url(#hh-swoosh)"/>
+  <path d="M468 205 C492 210 512 218 528 230 C505 222 485 217 462 214 Z" fill="#c43a50"/>
+</svg>

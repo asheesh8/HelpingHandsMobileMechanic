@@ -1,0 +1,10 @@
+node_modules
+dist
+.astro
+.env
+.DS_Store
+.claude
+raw-assets/facebook/photos
+raw-assets/facebook/*.json
+raw-assets/higgsfield
+raw-assets/3d
