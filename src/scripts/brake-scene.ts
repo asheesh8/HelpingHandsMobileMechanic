@@ -115,13 +115,18 @@ export async function mountBrake(canvas: HTMLCanvasElement, track: HTMLElement |
     last = now;
     resize();
 
-    // Scroll progress through the track (0 at top, 1 when it leaves).
-    let p = 0;
-    if (track) {
-      const r = track.getBoundingClientRect();
-      p = clamp(-r.top / Math.max(1, r.height - innerHeight));
-    }
-    explode = lerp(explode, ease(clamp((p - 0.15) / 0.5)), 0.12);
+    // Plain page scroll, no pinning: apart over the first ~1.6 screens,
+    // then fade out by the end of the brakes section.
+    const y = scrollY;
+    const vh = innerHeight;
+    const p = clamp(y / (vh * 1.6));
+    explode = lerp(explode, ease(p), 0.08);
+    const fixed = getComputedStyle(canvas).position === 'fixed';
+    const end = document.getElementById('brakes');
+    const fadeStart = end ? end.offsetTop + end.offsetHeight - vh * 1.2 : vh * 2.2;
+    const fade = fixed ? 1 - clamp((y - fadeStart) / (vh * 0.6)) : 1;
+    canvas.style.setProperty('--fade', fade.toFixed(3));
+    if (fade <= 0.001) { return; }
 
     px = lerp(px, tx, 0.06);
     py = lerp(py, ty, 0.06);
@@ -131,7 +136,7 @@ export async function mountBrake(canvas: HTMLCanvasElement, track: HTMLElement |
     // Three-quarter view in the hero, turning side-on as it explodes.
     assembly.rotation.x = lerp(-0.35, -0.1, explode) + py * 0.12;
     assembly.rotation.y = lerp(-0.55, -1.1, explode) + px * 0.2;
-    assembly.position.x = lerp(0, -0.25, explode);
+    assembly.position.x = lerp(0, 0.35, explode);
 
     if (caliper && home.cal) caliper.position.set(home.cal.x + explode * 22, home.cal.y + explode * 26, home.cal.z);
     if (pads && home.pad) pads.position.set(home.pad.x + explode * 11, home.pad.y + explode * 13, home.pad.z);
